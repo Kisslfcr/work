@@ -1,0 +1,13 @@
+{% macro course_tag(course) %}
+    <div>
+        {% if course.is_unique %}
+            <p> course {{course.name}} is unique </p>
+        {% elif course.has_tag %}
+            {% for tag in course.tags %}
+                <span> {{ tag }} </span>
+            {% endfor %}
+        {% else %}
+             <p> course is not unique and it don\'t has tag</p>
+        {% endif %}
+    </div>
+{% endmacro %}

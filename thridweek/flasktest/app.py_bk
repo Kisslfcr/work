@@ -1,0 +1,40 @@
+from flask import Flask
+from flask import url_for
+from flask import redirect
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Hello Shiyanlou'
+
+@app.route('/user/<username>')
+def user_index(username):
+    return username
+
+@app.route('/post/<post_id>')
+def show_post(post_id):
+    return post_id
+
+@app.route('/courses/<name>')
+def courses(name):
+    return 'Courses: {}'.format(name)
+
+@app.route('/test')
+def test():
+    print(url_for('courses',username='java'))
+#    print(url_for('show_post',post_id=1,_external=True))
+#    print(url_for('show_post',post_id=2,q='python 03'))
+#    print(url_for('show_post',post_id=2,q='python can'))
+#    print(url_for('show_post',post_id=2,_anchor='a'))
+    return 'Hello Shiyanlou!'
+
+@app.route('/<username>')
+def hello(username):
+    if username == 'shixiaolou':
+        return 'hello {}'.format(username)
+    else:
+        return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run()
