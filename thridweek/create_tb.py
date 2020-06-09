@@ -26,6 +26,14 @@ class Lab(Base):
     def __repr__(self):
         return 'id:{0},name:{1}'.format(self.id,self.course_id)
 
+class Path(Base):
+    __tablename__ = 'path'
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    name = Column(String(20),nullable=False)
+    config = Column(String(128))
+
+    def __repr__(self):
+        return 'id:{0},name:{1},config{2}'.format(self.id,self.name,self.config)
 
 
 if __name__ == '__main__':
