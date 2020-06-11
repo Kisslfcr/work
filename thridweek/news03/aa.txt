@@ -1,0 +1,11 @@
+db.create_all()
+java = Category(1,'Java')
+python = Category(2,'Python')
+file1 = File(1,'Hello Java', datetime.utcnow(), java, 'File Content - Java is cool!')
+file2 = File(2,'Hello Python', datetime.utcnow(), python, 'File Content - Python is cool!')
+db.session.add(java)
+db.session.add(python)
+db.session.add(file1)
+db.session.add(file2)
+db.session.commit()
+
