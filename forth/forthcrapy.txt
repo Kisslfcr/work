@@ -1,0 +1,55 @@
+git clone https://github.com/shiyanlou/louplus-python
+问题：
+正则的疑问
+In [3]: re.findall('\n\s*(.*)',str)
+Out[3]: ['iamok']
+In [4]: re.findall(r'\n\s*(.*)',str)
+Out[4]: ['iamok']
+
+代码：
+# -*- coding: utf-8 -*-
+import scrapy
+
+
+class GithubSpider(scrapy.Spider):
+    name = 'shiyanlou-github'
+
+    @property
+    def start_urls(self):
+            url_list = ['https://github.com/shiyanlou?tab=repositories',
+                        'https://github.com/shiyanlou?after=Y3Vyc29yOnYyOpK5MjAxNy0wNi0wN1QwODozMzozNyswODowMM4FkpMh&tab=repositories',
+                        'https://github.com/shiyanlou?after=Y3Vyc29yOnYyOpK5MjAxNy0wNi0wNlQxMzoxNToyMiswODowMM4FkjnP&tab=repositories',
+                        'https://github.com/shiyanlou?after=Y3Vyc29yOnYyOpK5MjAxNC0xMi0xNlQxMDo0MTowMiswODowMM4BrEWs&tab=repositories',
+                        'https://github.com/shiyanlou?after=Y3Vyc29yOnYyOpK5MjAxNC0xMS0wM1QwODo1OToxMSswODowMM4BjgTX&tab=repositories']
+            return url_list
+
+    def parse(self, response):
+        for repository in response.css('li.public'):
+            yield {
+                'name': repository.xpath('.//a[@itemprop="name codeRepository"]/text()').re_first(r'\n\s*(.*)'),
+                'update_time': repository.xpath('.//relative-time/@datetime').extract_first()
+            }
+
+我的错误的：
+sudo pip3 install scrapy
+sudo pip3 install --upgrade pip
+scrapy runspider gitscrapy.py -o shiyanlougithub.json
+vim gitscrapy.py
+
+import scrapy
+
+
+class ShiyanlouCoursesSpider(scrapy.Spider):
+
+    name = 'shiyanlou-courses'
+
+	def start_requests(self):
+		url_list = ['https://github.com/shiyanlou?before\=Y3Vyc29yOnYyOpK5MjAxNy0wNi0wN1QwODozMzozMiswODowMM4FkpQK&tab=repositories']
+		for url in url_list:
+			yield scrapy.Request(url=url, callback=self.parse)
+
+    def parse(self, response):
+        for course in response.css('li.itemtype="http://schema.org/Code"'):
+            yield {
+                'name': course.css('a::text').extract_first()
+            }
