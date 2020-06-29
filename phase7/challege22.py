@@ -10,7 +10,7 @@ def analysis(file, user_id):
     df = pd.DataFrame(fj)    
     df1 = df[df['user_id'] == user_id]
     print(df1)
-    times = df1.shape[1]
+    times = df1.shape[0]		#0去列，1是取行
     minutes = df1.minutes.sum()
 
     return times, minutes
